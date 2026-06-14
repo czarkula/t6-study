@@ -1,5 +1,6 @@
 (function() {
 	var LEADERBOARD_KEY = "t6PracticeLeaderboard";
+	var PENDING_SCORES_KEY = "t6PracticePendingScores";
 	var NAME_KEY = "t6PracticeName";
 	var THEME_KEY = "t6PracticeDarkMode";
 	var COMBINED_KEY = "t6PracticeCombinedRun";
@@ -37,7 +38,7 @@
 
 	function initLeaderboard() {
 		renderLeaderboard();
-		loadRemoteLeaderboard();
+		retryPendingScores().then(loadRemoteLeaderboard);
 
 		var clearButton = document.getElementById("clearLeaderboard");
 		if (clearButton) {
@@ -108,6 +109,7 @@
 		});
 
 		window.T6PracticeState = state;
+		retryPendingScores();
 	}
 
 	function recordIfComplete(kind, isComplete) {
@@ -128,8 +130,13 @@
 		state.recorded = true;
 		clearInterval(state.timerId);
 		var elapsedMs = Date.now() - state.startedAt;
-		saveResult(kind, state.name, elapsedMs);
-		updateSessionMessage("Complete. Saved time: " + formatTime(elapsedMs) + ".");
+		updateSessionMessage("Complete. Saved locally. Uploading...");
+		saveResult(kind, state.name, elapsedMs).then(function(uploaded) {
+			updateSessionMessage(uploaded ?
+				"Complete. Uploaded time: " + formatTime(elapsedMs) + "." :
+				"Complete. Saved locally; upload pending and will retry."
+			);
+		});
 	}
 
 	function startTimer(state) {
@@ -227,7 +234,12 @@
 		results.push(score);
 		results.sort(function(a, b) { return a.elapsedMs - b.elapsedMs; });
 		localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(results.slice(0, 20)));
-		saveRemoteResult(score);
+		return saveRemoteResult(score).then(function(uploaded) {
+			if (!uploaded) {
+				queuePendingScore(score);
+			}
+			return uploaded;
+		});
 	}
 
 	function markAnswersShown() {
@@ -273,9 +285,14 @@
 			state.recorded = true;
 			clearInterval(state.timerId);
 			var elapsedMs = Date.now() - combinedState.startedAt;
-			saveResult("combined", state.name, elapsedMs);
+			updateSessionMessage("Both complete. Saved locally. Uploading...");
+			saveResult("combined", state.name, elapsedMs).then(function(uploaded) {
+				updateSessionMessage(uploaded ?
+					"Both complete. Uploaded combined time: " + formatTime(elapsedMs) + "." :
+					"Both complete. Saved locally; upload pending and will retry."
+				);
+			});
 			clearCombinedState();
-			updateSessionMessage("Both complete. Saved combined time: " + formatTime(elapsedMs) + ".");
 			return;
 		}
 
@@ -469,14 +486,68 @@
 	}
 
 	function saveRemoteResult(score) {
-		var baseUrl = getBackendUrl();
-		if (!baseUrl || !window.fetch) return;
+		return postRemoteScore(score);
+	}
 
-		fetch(baseUrl + "/scores", {
+	function postRemoteScore(score) {
+		var baseUrl = getBackendUrl();
+		if (!baseUrl || !window.fetch) return Promise.resolve(false);
+
+		return fetch(baseUrl + "/scores", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(score)
-		}).catch(function() {});
+		}).then(function(response) {
+			return response.ok;
+		}).catch(function() {
+			return false;
+		});
+	}
+
+	function retryPendingScores() {
+		var pending = getPendingScores();
+		if (!pending.length) return Promise.resolve(true);
+
+		return Promise.all(pending.map(function(score) {
+			return postRemoteScore(score).then(function(uploaded) {
+				return { score: score, uploaded: uploaded };
+			});
+		})).then(function(results) {
+			var remaining = results
+				.filter(function(result) { return !result.uploaded; })
+				.map(function(result) { return result.score; });
+			localStorage.setItem(PENDING_SCORES_KEY, JSON.stringify(remaining));
+			return remaining.length === 0;
+		});
+	}
+
+	function queuePendingScore(score) {
+		var pending = getPendingScores();
+		var key = scoreKey(score);
+		var exists = pending.some(function(item) {
+			return scoreKey(item) === key;
+		});
+		if (!exists) {
+			pending.push(score);
+		}
+		localStorage.setItem(PENDING_SCORES_KEY, JSON.stringify(pending.slice(-20)));
+	}
+
+	function getPendingScores() {
+		try {
+			return JSON.parse(localStorage.getItem(PENDING_SCORES_KEY) || "[]");
+		} catch (error) {
+			return [];
+		}
+	}
+
+	function scoreKey(score) {
+		return [
+			score.kind || "",
+			score.name || "Anonymous",
+			Math.round(Number(score.elapsedMs) || 0),
+			score.date || ""
+		].join("|");
 	}
 
 	function mergeResults(localResults, remoteResults) {
