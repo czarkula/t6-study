@@ -13,6 +13,29 @@ Static practice pages derived from the downloaded T-6A boldface and ops limits p
 
 The frontend works without a backend, but scores are browser-local until `static/js/config.js` contains a deployed backend URL.
 
+Recommended free persistent option: Cloudflare Workers + D1. The Cloudflare backend lives in `backend-cloudflare/`.
+
+Basic setup:
+
+```powershell
+cd backend-cloudflare
+copy wrangler.toml.example wrangler.toml
+npm create cloudflare@latest
+```
+
+In Cloudflare, create a D1 database named `t6_study_leaderboard`, paste its database id into `wrangler.toml`, then run:
+
+```powershell
+npx wrangler d1 execute t6_study_leaderboard --file schema.sql
+npx wrangler deploy
+```
+
+After deploy, copy the Worker URL into `static/js/config.js`:
+
+```js
+window.T6_BACKEND_URL = "https://your-worker-name.your-subdomain.workers.dev";
+```
+
 The included backend is in `backend/` and uses plain Node with a JSON file:
 
 ```powershell

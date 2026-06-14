@@ -1,0 +1,11 @@
+name = "t6-study-leaderboard"
+main = "src/worker.js"
+compatibility_date = "2026-06-14"
+
+[vars]
+ALLOWED_ORIGIN = "https://czarkula.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "t6_study_leaderboard"
+database_id = "PASTE_DATABASE_ID_HERE"
