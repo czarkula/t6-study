@@ -1,2 +1,5 @@
 backend/leaderboard.json
 node_modules/
+.wrangler/
+backend-cloudflare/.wrangler/
+backend-cloudflare/wrangler.toml
