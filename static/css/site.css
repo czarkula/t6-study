@@ -633,12 +633,26 @@ body.practice-dark .question-group[style*="background-color: rgb(245, 201, 201)"
   }
 
   .shark-image {
-    width: 4.6rem;
+    width: 3.3rem;
   }
 
   .shark-buddy {
-    bottom: 0.75rem;
-    left: 0.75rem;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    opacity: 0.28;
+    transition: opacity 140ms ease, transform 140ms ease;
+  }
+
+  .shark-buddy:hover,
+  .shark-buddy:focus-within,
+  .shark-buddy:active {
+    opacity: 1;
+    transform: translateY(-0.2rem);
+  }
+
+  .shark-bubble {
+    font-size: 0.82rem;
+    left: 0;
   }
 
   .leaderboard-shell {
