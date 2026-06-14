@@ -134,7 +134,7 @@
 
 	function applyPracticeTheme(enabled) {
 		document.body.classList.toggle("practice-dark", enabled);
-		$("[data-theme-toggle]").text(enabled ? "Light Mode" : "Dark Mode");
+		$("[data-theme-toggle]").text(enabled ? "Light" : "Dark");
 	}
 
 	function saveResult(kind, name, elapsedMs) {
