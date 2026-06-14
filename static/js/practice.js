@@ -2,6 +2,7 @@
 	var LEADERBOARD_KEY = "t6PracticeLeaderboard";
 	var NAME_KEY = "t6PracticeName";
 	var THEME_KEY = "t6PracticeDarkMode";
+	var COMBINED_KEY = "t6PracticeCombinedRun";
 
 	window.T6Practice = {
 		initLanding: initLanding,
@@ -19,10 +20,14 @@
 		document.querySelectorAll("[data-practice-link]").forEach(function(link) {
 			link.addEventListener("click", function(event) {
 				var name = nameInput.value.trim();
+				var baseHref = link.getAttribute("data-base-href");
+				if (baseHref.indexOf("combo=1") !== -1) {
+					clearCombinedState();
+				}
 				if (name) {
-					link.href = link.getAttribute("data-base-href") + "?name=" + encodeURIComponent(name);
+					link.href = appendQueryParam(baseHref, "name", name);
 				} else {
-					link.href = link.getAttribute("data-base-href");
+					link.href = baseHref;
 				}
 			});
 		});
@@ -44,16 +49,22 @@
 	function initPracticePage(kind) {
 		initThemeToggle();
 		var name = getName();
+		var combined = isCombinedRun();
+		var combinedState = combined ? getCombinedState(name) : null;
 		var state = {
 			kind: kind,
 			name: name,
-			startedAt: null,
+			combined: combined,
+			startedAt: combinedState ? combinedState.startedAt : null,
 			timerId: null,
 			recorded: false
 		};
 
 		insertSessionBar(kind, name);
 		blockPaste();
+		if (state.combined && state.startedAt) {
+			startTimer(state);
+		}
 
 		$(".checkarea, input.question").on("focus input", function() {
 			startTimer(state);
@@ -66,6 +77,11 @@
 		var state = window.T6PracticeState;
 		if (!state || state.kind !== kind || !state.startedAt || state.recorded || !isComplete) return;
 
+		if (state.combined) {
+			recordCombinedStep(state);
+			return;
+		}
+
 		state.recorded = true;
 		clearInterval(state.timerId);
 		var elapsedMs = Date.now() - state.startedAt;
@@ -74,13 +90,29 @@
 	}
 
 	function startTimer(state) {
-		if (state.startedAt) return;
+		if (state.startedAt) {
+			if (!state.timerId) {
+				state.timerId = setInterval(function() {
+					updateTimer(Date.now() - state.startedAt);
+				}, 50);
+				updateTimer(Date.now() - state.startedAt);
+				updateSessionMessage(state.combined ? "Combined timer running." : "Timer running.");
+			}
+			return;
+		}
 		state.startedAt = Date.now();
+		if (state.combined) {
+			saveCombinedState({
+				name: state.name,
+				startedAt: state.startedAt,
+				completed: []
+			});
+		}
 		state.timerId = setInterval(function() {
 			updateTimer(Date.now() - state.startedAt);
 		}, 50);
 		updateTimer(0);
-		updateSessionMessage("Timer running.");
+		updateSessionMessage(state.combined ? "Combined timer running." : "Timer running.");
 	}
 
 	function insertSessionBar(kind, name) {
@@ -95,7 +127,7 @@
 				'<span>Page: <strong>' + escapeHtml(labelForKind(kind)) + '</strong></span>' +
 				'<span>Time: <strong id="practiceTimer">00:00.000</strong></span>' +
 			'</div>' +
-			'<div class="session-message" id="sessionMessage">Timer starts when you type.</div>';
+			'<div class="session-message" id="sessionMessage">' + (isCombinedRun() ? "Combined timer starts when you type." : "Timer starts when you type.") + '</div>';
 		main.insertBefore(bar, main.firstChild);
 	}
 
@@ -150,6 +182,80 @@
 		results.sort(function(a, b) { return a.elapsedMs - b.elapsedMs; });
 		localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(results.slice(0, 20)));
 		saveRemoteResult(score);
+	}
+
+	function recordCombinedStep(state) {
+		var combinedState = getCombinedState(state.name) || {
+			name: state.name,
+			startedAt: state.startedAt,
+			completed: []
+		};
+
+		if (combinedState.completed.indexOf(state.kind) === -1) {
+			combinedState.completed.push(state.kind);
+		}
+		combinedState.startedAt = combinedState.startedAt || state.startedAt;
+		saveCombinedState(combinedState);
+
+		if (state.kind === "boldface") {
+			state.recorded = true;
+			clearInterval(state.timerId);
+			updateSessionMessage("Boldface complete. Loading Ops Limits...");
+			window.setTimeout(function() {
+				window.location.href = buildCombinedUrl("ops.html", state.name);
+			}, 650);
+			return;
+		}
+
+		if (state.kind === "ops" && combinedState.completed.indexOf("boldface") !== -1) {
+			state.recorded = true;
+			clearInterval(state.timerId);
+			var elapsedMs = Date.now() - combinedState.startedAt;
+			saveResult("combined", state.name, elapsedMs);
+			clearCombinedState();
+			updateSessionMessage("Both complete. Saved combined time: " + formatTime(elapsedMs) + ".");
+			return;
+		}
+
+		updateSessionMessage("Ops complete. Start from Both on the homepage to save a combined time.");
+	}
+
+	function isCombinedRun() {
+		var params = new URLSearchParams(window.location.search);
+		return params.get("combo") === "1";
+	}
+
+	function getCombinedState(name) {
+		try {
+			var state = JSON.parse(sessionStorage.getItem(COMBINED_KEY) || "null");
+			if (!state || !state.startedAt) return null;
+			state.name = state.name || name || "Anonymous";
+			state.completed = Array.isArray(state.completed) ? state.completed : [];
+			return state;
+		} catch (error) {
+			return null;
+		}
+	}
+
+	function saveCombinedState(state) {
+		sessionStorage.setItem(COMBINED_KEY, JSON.stringify(state));
+	}
+
+	function clearCombinedState() {
+		sessionStorage.removeItem(COMBINED_KEY);
+	}
+
+	function buildCombinedUrl(path, name) {
+		var url = path + "?combo=1";
+		if (name && name !== "Anonymous") {
+			url = appendQueryParam(url, "name", name);
+		}
+		return url;
+	}
+
+	function appendQueryParam(url, key, value) {
+		var separator = url.indexOf("?") === -1 ? "?" : "&";
+		return url + separator + encodeURIComponent(key) + "=" + encodeURIComponent(value);
 	}
 
 	function getResults() {
@@ -238,7 +344,9 @@
 	}
 
 	function labelForKind(kind) {
-		return kind === "ops" ? "Ops Limits" : "Boldface";
+		if (kind === "ops") return "Ops Limits";
+		if (kind === "combined") return "Both";
+		return "Boldface";
 	}
 
 	function escapeHtml(value) {

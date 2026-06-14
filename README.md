@@ -1,6 +1,6 @@
 # T-6A Practice
 
-A hostable T-6A Boldface and Ops Limits practice site with exact-match grading, run timers, optional names, dark mode, and a shared leaderboard.
+A hostable T-6A Boldface and Ops Limits practice site with exact-match grading, run timers, optional names, dark mode, combined runs, and a shared leaderboard.
 
 Live site:
 
@@ -29,7 +29,7 @@ The frontend points to that Worker in `static/js/config.js`:
 window.T6_BACKEND_URL = "https://t6-study-leaderboard.mattsharkey143.workers.dev";
 ```
 
-Scores are submitted only after an all-correct check. If the Worker is unavailable, the site falls back to local browser scores so practice still works.
+Scores are submitted only after an all-correct check. Boldface, Ops Limits, and Both/combined runs are saved as separate leaderboard types. If the Worker is unavailable, the site falls back to local browser scores so practice still works.
 
 Quick backend checks:
 
@@ -60,6 +60,13 @@ npx.cmd wrangler d1 execute t6_study_leaderboard --remote --file schema.sql
 npx.cmd wrangler deploy
 ```
 
+If the database already existed before combined runs were added, run this migration before deploying the updated Worker:
+
+```powershell
+npx.cmd wrangler d1 execute t6_study_leaderboard --remote --file migration-combined-kind.sql
+npx.cmd wrangler deploy
+```
+
 `backend-cloudflare/wrangler.toml` is intentionally local-only because it contains deployment-specific database settings.
 
 There is also a simple Node backend in `backend/`, but Cloudflare Workers + D1 is the intended shared setup for the GitHub Pages site.
@@ -69,6 +76,7 @@ There is also a simple Node backend in `backend/`, but Cloudflare Workers + D1 i
 - Modern dark landing page with optional name entry and a shark image.
 - Separate leaderboard page instead of making the leaderboard the homepage.
 - Practice buttons labeled simply `Boldface` and `Ops Limits`.
+- Combined `Both` mode starts with Boldface, rolls into Ops Limits, and saves one combined time after both are completed correctly.
 - Optional names. Blank names save/display as `Anonymous`.
 - Millisecond timer display with three decimal places.
 - Centered modern `Check` and `Show Answers` buttons.

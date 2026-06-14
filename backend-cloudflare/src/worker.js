@@ -58,7 +58,7 @@ function cleanScore(score) {
   if (!score || typeof score !== "object") return null;
 
   const name = String(score.name || "Anonymous").trim().slice(0, 32) || "Anonymous";
-  const kind = score.kind === "ops" ? "ops" : "boldface";
+  const kind = ["boldface", "ops", "combined"].includes(score.kind) ? score.kind : "boldface";
   const elapsedMs = Number(score.elapsedMs);
 
   if (!Number.isFinite(elapsedMs) || elapsedMs < 0 || elapsedMs > 60 * 60 * 1000) {
