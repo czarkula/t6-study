@@ -10,6 +10,9 @@ Static practice pages derived from the downloaded T-6A boldface and ops limits p
 
 ## Corrections Made
 
+- Added a dark landing page with name entry and a browser-local fastest-times leaderboard.
+- Added run timers for Boldface and Ops Limits. Times save only after an all-correct check.
+- Disabled paste, drag/drop, and context-menu paste on answer fields.
 - Converted original `/uct/...` asset and nav links to local relative paths.
 - Removed unrelated/broken nav links so the package can be hosted as a standalone site.
 - Fixed malformed HTML in the ops page.

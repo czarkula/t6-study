@@ -1,5 +1,6 @@
 $("#checkButton").click(function() {
-	check(true);
+	var allCorrect = check(true);
+	T6Practice.recordIfComplete("boldface", allCorrect);
 });
 
 $("#checkS2Button").click(function() {
@@ -7,6 +8,8 @@ $("#checkS2Button").click(function() {
 });
 	
 function check(all) {
+	var pageCorrect = true;
+
 	$("#boldfaceTable").find('.question').each(
 		function(index) {
 			if(all || $(this).hasClass("s2-required")) {
@@ -22,10 +25,13 @@ function check(all) {
 					$(this).css("background-color", "#c9f5d5");
 				} else {
 					$(this).css("background-color", "#f5c9c9");
+					pageCorrect = false;
 				}
 			}
 		}
 	);
+
+	return pageCorrect;
 }
 
 $("#revealButton").click(function() {

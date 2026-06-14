@@ -5,19 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>T-6A Practice</title>
     <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 5rem;
-      }
-
-      main {
-        max-width: 760px;
-        padding: 2rem 1rem;
-      }
-    </style>
+    <link href="static/css/site.css" rel="stylesheet">
   </head>
-  <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <body class="landing-page">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="index.html">T-6A Practice</a>
         <div class="navbar-nav">
@@ -27,14 +18,50 @@
       </div>
     </nav>
 
-    <main class="container">
-      <h1 class="h3 mb-4">T-6A Practice</h1>
-      <div class="list-group">
-        <a class="list-group-item list-group-item-action" href="boldface.html">Boldface Emergency Procedures</a>
-        <a class="list-group-item list-group-item-action" href="ops.html">Operating Limits</a>
-      </div>
+    <main class="landing-shell container">
+      <section>
+        <div class="hero-kicker">Strict recall trainer</div>
+        <h1 class="hero-title">Write it right. Then beat your time.</h1>
+        <p class="hero-copy">Enter a name, pick a sheet, and race through exact-match T-6A boldface or ops limits practice.</p>
+
+        <div class="launch-panel mt-4">
+          <label for="pilotName" class="form-label">Name</label>
+          <input id="pilotName" class="form-control form-control-lg name-input" type="text" autocomplete="name" maxlength="32">
+          <div class="launch-actions">
+            <a class="launch-card" href="boldface.html" data-base-href="boldface.html" data-practice-link>
+              <strong>Boldface</strong>
+              <span>Emergency procedures, strict text entry, timed completion.</span>
+            </a>
+            <a class="launch-card" href="ops.html" data-base-href="ops.html" data-practice-link>
+              <strong>Ops Limits</strong>
+              <span>Exact values and wording, left-column tab flow, timed completion.</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="leaderboard-panel">
+        <div class="leaderboard-header">
+          <h2 class="h5 mb-0">Fastest Local Times</h2>
+          <button type="button" id="clearLeaderboard" class="btn btn-sm btn-outline-light">Clear</button>
+        </div>
+        <div id="leaderboardEmpty" class="leaderboard-empty">No completed runs on this browser yet.</div>
+        <table class="table leaderboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Sheet</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </section>
     </main>
 
     <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/practice.js"></script>
+    <script>T6Practice.initLanding();</script>
   </body>
 </html>
