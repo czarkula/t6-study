@@ -96,14 +96,14 @@ body.landing-page {
 }
 
 .launch-card {
-  align-items: flex-start;
+  align-items: center;
   background: #18212d;
   border: 1px solid #2d3a4a;
   border-radius: 8px;
   color: #edf2f7;
   display: flex;
-  flex-direction: column;
-  min-height: 8.5rem;
+  justify-content: center;
+  min-height: 4.75rem;
   padding: 1rem;
   text-decoration: none;
 }
@@ -114,10 +114,8 @@ body.landing-page {
   text-decoration: none;
 }
 
-.launch-card span {
-  color: #96a8bb;
-  font-size: 0.9rem;
-  margin-top: 0.45rem;
+.launch-card strong {
+  font-size: 1.08rem;
 }
 
 .leaderboard-panel {
