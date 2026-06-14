@@ -7,6 +7,7 @@
 	window.T6Practice = {
 		initLanding: initLanding,
 		initLeaderboard: initLeaderboard,
+		initCombinedTransition: initCombinedTransition,
 		initPracticePage: initPracticePage,
 		markAnswersShown: markAnswersShown,
 		recordIfComplete: recordIfComplete
@@ -44,6 +45,33 @@
 				localStorage.removeItem(LEADERBOARD_KEY);
 				renderLeaderboard();
 			});
+		}
+	}
+
+	function initCombinedTransition() {
+		var name = getName();
+		var combinedState = getCombinedState(name);
+		if (!combinedState || combinedState.completed.indexOf("boldface") === -1) {
+			window.location.href = "index.html";
+			return;
+		}
+
+		var nameTarget = document.getElementById("combinedName");
+		var timerTarget = document.getElementById("combinedTimer");
+		var continueButton = document.getElementById("continueCombined");
+		if (nameTarget) nameTarget.textContent = combinedState.name || "Anonymous";
+
+		function tick() {
+			if (timerTarget) {
+				timerTarget.textContent = formatTime(Date.now() - combinedState.startedAt);
+			}
+		}
+
+		tick();
+		setInterval(tick, 50);
+
+		if (continueButton) {
+			continueButton.href = buildCombinedUrl("ops.html", combinedState.name);
 		}
 	}
 
@@ -216,10 +244,8 @@
 		if (state.kind === "boldface") {
 			state.recorded = true;
 			clearInterval(state.timerId);
-			updateSessionMessage("Boldface complete. Loading Ops Limits...");
-			window.setTimeout(function() {
-				window.location.href = buildCombinedUrl("ops.html", state.name);
-			}, 650);
+			updateSessionMessage("Boldface complete. Continue to Ops Limits.");
+			window.location.href = buildCombinedUrl("combined-transition.html", state.name);
 			return;
 		}
 

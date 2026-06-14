@@ -13,6 +13,7 @@ https://czarkula.github.io/t6-study/
 - `index.html` - landing page
 - `boldface.html` - Boldface practice
 - `ops.html` - Ops Limits practice
+- `combined-transition.html` - between-page handoff for combined runs
 - `leaderboard.html` - shared fastest-times page
 
 ## Leaderboard
@@ -76,7 +77,7 @@ There is also a simple Node backend in `backend/`, but Cloudflare Workers + D1 i
 - Modern dark landing page with optional name entry and a shark image.
 - Separate leaderboard page instead of making the leaderboard the homepage.
 - Practice buttons labeled simply `Boldface` and `Ops Limits`.
-- Combined `Both` mode starts with Boldface, rolls into Ops Limits, and saves one combined time after both are completed correctly.
+- Combined `Both` mode starts with Boldface, shows a transition page with the timer still running, then continues into Ops Limits and saves one combined time after both are completed correctly.
 - Optional names. Blank names save/display as `Anonymous`.
 - Millisecond timer display with three decimal places.
 - Centered modern `Check` and `Show Answers` buttons.
