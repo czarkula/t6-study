@@ -63,6 +63,7 @@
 		};
 
 		insertSessionBar(kind, name);
+		updatePracticeLinks(name, combined);
 		blockPaste();
 		if (state.combined && state.startedAt) {
 			startTimer(state);
@@ -271,6 +272,17 @@
 	function appendQueryParam(url, key, value) {
 		var separator = url.indexOf("?") === -1 ? "?" : "&";
 		return url + separator + encodeURIComponent(key) + "=" + encodeURIComponent(value);
+	}
+
+	function updatePracticeLinks(name, combined) {
+		document.querySelectorAll('.navbar a[href$="boldface.html"], .navbar a[href$="ops.html"]').forEach(function(link) {
+			var href = link.getAttribute("href").split("?")[0];
+			var nextHref = combined ? appendQueryParam(href, "combo", "1") : href;
+			if (name && name !== "Anonymous") {
+				nextHref = appendQueryParam(nextHref, "name", name);
+			}
+			link.setAttribute("href", nextHref);
+		});
 	}
 
 	function getResults() {
