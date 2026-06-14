@@ -1,0 +1,53 @@
+body {
+  padding-top: 5rem;
+}
+
+main {
+  padding-inline: 1rem;
+}
+
+td {
+	vertical-align: middle;
+}
+
+input.question {
+	margin: 0.1rem 0.15rem;
+}
+
+.limit-cell {
+	white-space: nowrap;
+}
+
+.limit-label {
+	display: inline-block;
+	width: 8.5rem;
+	text-align: left;
+}
+
+.limit-answer {
+	display: inline;
+}
+
+.shaded {
+	background-color: #aaaaaa !important;
+}
+
+.input-sm {
+	width: 3em;
+}
+
+.input-med {
+	width: 5em;
+}
+
+.input-lg {
+	width: 8em;
+}
+
+.input-xl {
+	width: 12em;
+}
+
+.answer {
+	white-space: pre-wrap;
+}

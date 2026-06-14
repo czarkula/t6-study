@@ -1,0 +1,43 @@
+body {
+  padding-top: 5rem;
+}
+
+main {
+  padding-inline: 1rem;
+}
+
+textarea {
+  min-height: 6rem;
+}
+
+.question {
+  padding: 0.35rem;
+}
+
+.inline-boldface-line {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  white-space: nowrap;
+}
+
+.inline-boldface-line .form-control {
+  display: inline-block;
+}
+
+.breaker-field {
+  width: 18rem;
+}
+
+.pull-field {
+  width: 20rem;
+}
+
+.console-note {
+  color: #212529;
+}
+
+.answer {
+	white-space: pre-wrap;
+}

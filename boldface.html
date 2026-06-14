@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>T-6A Boldface</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/boldface.css" rel="stylesheet">
+  </head>
+
+  <body>
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="index.html">T-6A Practice</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+		<li class="nav-item">
+          <a class="nav-link active" href="boldface.html">Boldface</a>
+        </li>
+		<li class="nav-item">
+          <a class="nav-link" href="ops.html">Ops Limits</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <main role="main">
+		<table class="table table-bordered" id="boldfaceTable">
+			<tr>
+				<td colspan="6" class="col-6"> <b>T-6A BOLDFACE Emergency Procedures and Operating Limitations</b> </td>
+				<td class="col-1"> <b>01 June 2023</b> </td>
+    		</tr>
+			<tr>
+				<td colspan="2" class="col-2"> Name </td>
+				<td colspan="3" class="col-3"> Checked By </td>
+				<td colspan="2" class="col-2"> Date </td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7"> <b> Section 1. BOLDFACE Emergency Procedures </b> </td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Emergency Engine Shutdown on the Ground </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface1" rows="3"></textarea>
+						<p class="answer" style="display:none">PCL - OFF<br>FIREWALL SHUTOFF HANDLE - PULL</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Abort </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface2" rows="3"></textarea>
+						<p class="answer" style="display:none">PCL - IDLE<br>BRAKES - AS REQUIRED</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Engine Failure Immediately After Takeoff (Sufficient Runway Remaining Straight Ahead) </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface3" rows="3"></textarea>
+						<p class="answer" style="display:none">AIRSPEED - 110 KNOTS (MINIMUM)<br>PCL - AS REQUIRED<br>EMER LDG GR HANDLE - PULL (AS REQUIRED)</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Engine Failure During Flight </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface4" rows="3"></textarea>
+						<p class="answer" style="display:none">ZOOM/GLIDE - 125 KNOTS (MINIMUM)<br>PCL - OFF<br>INTERCEPT ELP</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Immediate Airstart (PMU NORM) </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface5" rows="3"></textarea>
+						<p class="answer" style="display:none">PCL - OFF<br>STARTER SWITCH - AUTO/RESET<br>PCL - IDLE, ABOVE 13% N1</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Uncommanded Power Changes / Loss of Power / Uncommanded Propeller Feather </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface6a" rows="2"></textarea>
+						<p class="answer" style="display:none">PCL - MID RANGE<br>PMU SWITCH - OFF</p>
+					</div>
+					<div class="question inline-boldface-line">
+						<input type="text" class="form-control checkarea breaker-field" id="boldface6b">
+						<span class="console-note">(left front console)</span>
+						<span class="console-note">-</span>
+						<input type="text" class="form-control checkarea pull-field" id="boldface6c">
+						<p class="answer" style="display:none">PROP SYS CIRCUIT BREAKER<br>PULL, IF Np STABLE BELOW 40%</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Inadvertent Departure From Controlled Flight </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface7" rows="3"></textarea>
+						<p class="answer" style="display:none">PCL - IDLE<br>CONTROLS - NEUTRAL<br>ALTITUDE - CHECK</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Fire In Flight <br> If Fire is Confirmed: </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface8" rows="3"></textarea>
+						<p class="answer" style="display:none">PCL - OFF <br>FIREWALL SHUTOFF HANDLE - PULL</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b>&lt;32&gt; PHYSIOLOGICAL SYMPTOMS</b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface9" rows="2"></textarea>
+						<p class="answer" style="display:none">BOS PUSH MAN - PRESS ON</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b>&lt;30&gt; OBOGS Failure / Overtemp / Physiological Symptoms/&lt;32&gt; OXY CRIT Annunciator</b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface10" rows="3"></textarea>
+						<p class="answer" style="display:none">GREEN RING - PULL (AS REQUIRED)<br>DESCENT BELOW 10,000 FEET MSL - INITIATE<br>OBOGS SUPPLY LEVER - OFF (BOTH)</p>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="7" class="col-7">
+					<b> Eject </b>
+					<div class="question">
+						<textarea class="form-control checkarea" id="boldface11" rows="3"></textarea>
+						<p class="answer" style="display:none">EJECTION HANDLE - PULL</p>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div class="form-row">
+			<button type="button" id="checkButton" class="btn btn-primary">Check</button>
+			<button type="button" id="revealButton" class="btn btn-secondary">Show Answers</button>
+		</div>
+	</main><!-- /.container -->
+
+    <script src="static/js/jquery-3.6.0.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/boldface.js"></script>
+
+  </body>
+</html>
