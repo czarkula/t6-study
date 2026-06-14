@@ -10,6 +10,10 @@ textarea {
   min-height: 6rem;
 }
 
+textarea.compact-checkarea {
+  min-height: 0;
+}
+
 .question {
   padding: 0.35rem;
 }
