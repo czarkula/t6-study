@@ -86,19 +86,25 @@
 			combined: combined,
 			startedAt: combinedState ? combinedState.startedAt : null,
 			timerId: null,
-			revealed: false,
+			revealed: combinedState ? !!combinedState.revealed : false,
 			recorded: false
 		};
 
 		insertSessionBar(kind, name);
 		updatePracticeLinks(name, combined);
 		blockPaste();
+		if (combined) {
+			restoreAnswers(kind);
+		}
+		bindSessionName(state);
+		bindHotSwap(state);
 		if (state.combined && state.startedAt) {
 			startTimer(state);
 		}
 
 		$(".checkarea, input.question").on("focus input", function() {
 			startTimer(state);
+			saveAnswers(state.kind);
 		});
 
 		window.T6PracticeState = state;
@@ -160,11 +166,14 @@
 		bar.className = "session-bar";
 		bar.innerHTML =
 			'<div class="session-meta">' +
-				'<span>Name: <strong>' + escapeHtml(name) + '</strong></span>' +
+				'<label class="session-name">Name: <input id="sessionName" type="text" value="' + escapeHtml(name === "Anonymous" ? "" : name) + '" placeholder="Anonymous" maxlength="32"></label>' +
 				'<span>Page: <strong>' + escapeHtml(labelForKind(kind)) + '</strong></span>' +
 				'<span>Time: <strong id="practiceTimer">00:00.000</strong></span>' +
 			'</div>' +
-			'<div class="session-message" id="sessionMessage">' + (isCombinedRun() ? "Combined timer starts when you type." : "Timer starts when you type.") + '</div>';
+			'<div class="session-tools">' +
+				'<div class="session-message" id="sessionMessage">' + (isCombinedRun() ? "Combined timer starts when you type." : "Timer starts when you type.") + '</div>' +
+				'<a class="session-swap" id="sessionSwap" href="#" style="display:none"></a>' +
+			'</div>';
 		main.insertBefore(bar, main.firstChild);
 	}
 
@@ -225,6 +234,15 @@
 		var state = window.T6PracticeState;
 		if (!state) return;
 		state.revealed = true;
+		if (state.combined) {
+			var combinedState = getCombinedState(state.name) || {
+				name: state.name,
+				startedAt: state.startedAt,
+				completed: []
+			};
+			combinedState.revealed = true;
+			saveCombinedState(combinedState);
+		}
 		updateSessionMessage("Answers shown. This run will not save to the leaderboard.");
 	}
 
@@ -239,6 +257,8 @@
 			combinedState.completed.push(state.kind);
 		}
 		combinedState.startedAt = combinedState.startedAt || state.startedAt;
+		combinedState.name = state.name;
+		combinedState.revealed = combinedState.revealed || state.revealed;
 		saveCombinedState(combinedState);
 
 		if (state.kind === "boldface") {
@@ -273,6 +293,8 @@
 			if (!state || !state.startedAt) return null;
 			state.name = state.name || name || "Anonymous";
 			state.completed = Array.isArray(state.completed) ? state.completed : [];
+			state.answers = state.answers && typeof state.answers === "object" ? state.answers : {};
+			state.revealed = !!state.revealed;
 			return state;
 		} catch (error) {
 			return null;
@@ -301,13 +323,101 @@
 	}
 
 	function updatePracticeLinks(name, combined) {
-		document.querySelectorAll('.navbar a[href$="boldface.html"], .navbar a[href$="ops.html"]').forEach(function(link) {
+		document.querySelectorAll('.navbar a[href*="boldface.html"], .navbar a[href*="ops.html"]').forEach(function(link) {
 			var href = link.getAttribute("href").split("?")[0];
 			var nextHref = combined ? appendQueryParam(href, "combo", "1") : href;
 			if (name && name !== "Anonymous") {
 				nextHref = appendQueryParam(nextHref, "name", name);
 			}
 			link.setAttribute("href", nextHref);
+		});
+	}
+
+	function bindSessionName(state) {
+		var input = document.getElementById("sessionName");
+		if (!input) return;
+
+		input.addEventListener("input", function() {
+			var nextName = input.value.trim() || "Anonymous";
+			state.name = nextName;
+			updatePracticeLinks(nextName, state.combined);
+			updateSwapLink(state);
+			if (state.combined) {
+				var combinedState = getCombinedState(nextName) || {
+					name: nextName,
+					startedAt: state.startedAt,
+					completed: [],
+					answers: {}
+				};
+				combinedState.name = nextName;
+				if (state.startedAt) combinedState.startedAt = state.startedAt;
+				saveCombinedState(combinedState);
+			}
+		});
+	}
+
+	function bindHotSwap(state) {
+		var swap = document.getElementById("sessionSwap");
+		if (!swap || !state.combined) return;
+
+		var nextKind = state.kind === "boldface" ? "ops" : "boldface";
+		var nextPath = nextKind === "ops" ? "ops.html" : "boldface.html";
+		swap.textContent = nextKind === "ops" ? "Switch to Ops Limits" : "Switch to Boldface";
+		swap.style.display = "inline-flex";
+		updateSwapLink(state);
+		swap.addEventListener("click", function() {
+			saveAnswers(state.kind);
+			var combinedState = getCombinedState(state.name) || {
+				name: state.name,
+				startedAt: state.startedAt || Date.now(),
+				completed: [],
+				answers: {}
+			};
+			combinedState.name = state.name;
+			combinedState.startedAt = state.startedAt || combinedState.startedAt;
+			saveCombinedState(combinedState);
+		});
+	}
+
+	function updateSwapLink(state) {
+		var swap = document.getElementById("sessionSwap");
+		if (!swap || !state.combined) return;
+
+		var nextPath = state.kind === "boldface" ? "ops.html" : "boldface.html";
+		swap.href = buildCombinedUrl(nextPath, state.name);
+	}
+
+	function saveAnswers(kind) {
+		var state = window.T6PracticeState;
+		if (!state || !state.combined) return;
+
+		var combinedState = getCombinedState(state.name) || {
+			name: state.name,
+			startedAt: state.startedAt,
+			completed: [],
+			answers: {}
+		};
+		combinedState.answers = combinedState.answers || {};
+		combinedState.answers[kind] = {};
+		document.querySelectorAll(".checkarea, input.question").forEach(function(field, index) {
+			var key = field.id || "field-" + index;
+			combinedState.answers[kind][key] = field.value;
+		});
+		combinedState.name = state.name;
+		combinedState.startedAt = state.startedAt || combinedState.startedAt;
+		saveCombinedState(combinedState);
+	}
+
+	function restoreAnswers(kind) {
+		var combinedState = getCombinedState(getName());
+		if (!combinedState || !combinedState.answers || !combinedState.answers[kind]) return;
+
+		var answers = combinedState.answers[kind];
+		document.querySelectorAll(".checkarea, input.question").forEach(function(field, index) {
+			var key = field.id || "field-" + index;
+			if (Object.prototype.hasOwnProperty.call(answers, key)) {
+				field.value = answers[key];
+			}
 		});
 	}
 

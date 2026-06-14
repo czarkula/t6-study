@@ -77,8 +77,8 @@ There is also a simple Node backend in `backend/`, but Cloudflare Workers + D1 i
 - Modern dark landing page with optional name entry and a shark image.
 - Separate leaderboard page instead of making the leaderboard the homepage.
 - Practice buttons labeled simply `Boldface` and `Ops Limits`.
-- Combined `Both` mode starts with Boldface, shows a transition page with the timer still running, then continues into Ops Limits and saves one combined time after both are completed correctly.
-- Optional names. Blank names save/display as `Anonymous`.
+- Combined `Both` mode starts with Boldface, keeps the timer running across pages, allows hot-swapping between Boldface and Ops Limits with answers preserved, shows a transition page after Boldface is completed, and saves one combined time after both are completed correctly.
+- Optional editable session names. Blank names save/display as `Anonymous`.
 - Millisecond timer display with three decimal places.
 - Centered modern `Check` and `Show Answers` buttons.
 - Dark/light toggle on the Boldface and Ops Limits practice pages.
