@@ -271,7 +271,7 @@
 		var empty = document.getElementById("leaderboardEmpty");
 		if (!target || !empty) return;
 
-		var results = getResults().slice(0, 10);
+		var results = getResults().slice(0, 20);
 		target.innerHTML = "";
 		empty.style.display = results.length ? "none" : "block";
 
@@ -297,7 +297,7 @@
 			})
 			.then(function(results) {
 				if (!Array.isArray(results)) return;
-				localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(results.slice(0, 20)));
+				localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(mergeResults(getResults(), results).slice(0, 20)));
 				renderLeaderboard();
 			})
 			.catch(function() {
@@ -314,6 +314,23 @@
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(score)
 		}).catch(function() {});
+	}
+
+	function mergeResults(localResults, remoteResults) {
+		var seen = {};
+		return localResults.concat(remoteResults)
+			.filter(function(result) {
+				if (!result || typeof result !== "object") return false;
+				var key = [
+					result.kind || "",
+					result.name || "Anonymous",
+					Math.round(Number(result.elapsedMs) || 0)
+				].join("|");
+				if (seen[key]) return false;
+				seen[key] = true;
+				return true;
+			})
+			.sort(function(a, b) { return a.elapsedMs - b.elapsedMs; });
 	}
 
 	function getBackendUrl() {
