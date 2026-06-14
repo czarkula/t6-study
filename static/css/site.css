@@ -269,10 +269,42 @@ body.landing-page {
 }
 
 .practice-actions {
+  align-items: center;
   display: flex;
   gap: 0.75rem;
   justify-content: center;
-  margin: 1rem 0 2rem;
+  margin: 1.25rem auto 2.5rem;
+  max-width: 34rem;
+  width: 100%;
+}
+
+.practice-actions .btn {
+  border: 0;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+  flex: 1 1 0;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  min-height: 3.2rem;
+  padding: 0.85rem 1.4rem;
+}
+
+.practice-actions .btn-primary {
+  background: #0f766e;
+}
+
+.practice-actions .btn-primary:hover,
+.practice-actions .btn-primary:focus {
+  background: #115e59;
+}
+
+.practice-actions .btn-secondary {
+  background: #1e293b;
+}
+
+.practice-actions .btn-secondary:hover,
+.practice-actions .btn-secondary:focus {
+  background: #334155;
 }
 
 @media (max-width: 820px) {
@@ -293,5 +325,14 @@ body.landing-page {
   .session-bar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .practice-actions {
+    flex-direction: column;
+    padding: 0 1rem;
+  }
+
+  .practice-actions .btn {
+    width: 100%;
   }
 }
