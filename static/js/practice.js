@@ -125,7 +125,8 @@
 		var enabled = localStorage.getItem(THEME_KEY) === "true";
 		applyPracticeTheme(enabled);
 
-		$("[data-theme-toggle]").on("click", function() {
+		$("[data-theme-toggle]").on("click", function(event) {
+			event.preventDefault();
 			enabled = !document.body.classList.contains("practice-dark");
 			localStorage.setItem(THEME_KEY, enabled ? "true" : "false");
 			applyPracticeTheme(enabled);
