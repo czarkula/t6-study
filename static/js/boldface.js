@@ -35,6 +35,7 @@ function check(all) {
 }
 
 $("#revealButton").click(function() {
+	T6Practice.markAnswersShown();
 	$("#boldfaceTable").find('.question').each(
 		function(index) { 
 			var answer = "";

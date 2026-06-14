@@ -8,6 +8,7 @@
 		initLanding: initLanding,
 		initLeaderboard: initLeaderboard,
 		initPracticePage: initPracticePage,
+		markAnswersShown: markAnswersShown,
 		recordIfComplete: recordIfComplete
 	};
 
@@ -57,6 +58,7 @@
 			combined: combined,
 			startedAt: combinedState ? combinedState.startedAt : null,
 			timerId: null,
+			revealed: false,
 			recorded: false
 		};
 
@@ -76,6 +78,12 @@
 	function recordIfComplete(kind, isComplete) {
 		var state = window.T6PracticeState;
 		if (!state || state.kind !== kind || !state.startedAt || state.recorded || !isComplete) return;
+		if (state.revealed) {
+			state.recorded = true;
+			clearInterval(state.timerId);
+			updateSessionMessage("Correct, but not saved because answers were shown.");
+			return;
+		}
 
 		if (state.combined) {
 			recordCombinedStep(state);
@@ -182,6 +190,13 @@
 		results.sort(function(a, b) { return a.elapsedMs - b.elapsedMs; });
 		localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(results.slice(0, 20)));
 		saveRemoteResult(score);
+	}
+
+	function markAnswersShown() {
+		var state = window.T6PracticeState;
+		if (!state) return;
+		state.revealed = true;
+		updateSessionMessage("Answers shown. This run will not save to the leaderboard.");
 	}
 
 	function recordCombinedStep(state) {
