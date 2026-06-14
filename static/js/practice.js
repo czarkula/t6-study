@@ -4,6 +4,7 @@
 
 	window.T6Practice = {
 		initLanding: initLanding,
+		initLeaderboard: initLeaderboard,
 		initPracticePage: initPracticePage,
 		recordIfComplete: recordIfComplete
 	};
@@ -13,8 +14,6 @@
 		if (!nameInput) return;
 
 		nameInput.value = localStorage.getItem(NAME_KEY) || "";
-		renderLeaderboard();
-		loadRemoteLeaderboard();
 
 		document.querySelectorAll("[data-practice-link]").forEach(function(link) {
 			link.addEventListener("click", function(event) {
@@ -28,6 +27,11 @@
 				link.href = link.getAttribute("data-base-href") + "?name=" + encodeURIComponent(name);
 			});
 		});
+	}
+
+	function initLeaderboard() {
+		renderLeaderboard();
+		loadRemoteLeaderboard();
 
 		var clearButton = document.getElementById("clearLeaderboard");
 		if (clearButton) {

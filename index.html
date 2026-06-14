@@ -14,15 +14,16 @@
         <div class="navbar-nav">
           <a class="nav-link" href="boldface.html">Boldface</a>
           <a class="nav-link" href="ops.html">Ops Limits</a>
+          <a class="nav-link" href="leaderboard.html">Leaderboard</a>
         </div>
       </div>
     </nav>
 
-    <main class="landing-shell container">
-      <section>
+    <main class="home-shell container">
+      <section class="home-copy">
         <div class="hero-kicker">Strict recall trainer</div>
-        <h1 class="hero-title">Write it right. Then beat your time.</h1>
-        <p class="hero-copy">Enter a name, pick a sheet, and race through exact-match T-6A boldface or ops limits practice.</p>
+        <h1 class="home-title">Hello! Practice boldface and ops limits here.</h1>
+        <p class="hero-copy">Type it exactly, race the clock, and keep your flows sharp.</p>
 
         <div class="launch-panel mt-4">
           <label for="pilotName" class="form-label">Name</label>
@@ -30,33 +31,25 @@
           <div class="launch-actions">
             <a class="launch-card" href="boldface.html" data-base-href="boldface.html" data-practice-link>
               <strong>Boldface</strong>
-              <span>Emergency procedures, strict text entry, timed completion.</span>
+              <span>Emergency procedures with strict text entry.</span>
             </a>
             <a class="launch-card" href="ops.html" data-base-href="ops.html" data-practice-link>
               <strong>Ops Limits</strong>
-              <span>Exact values and wording, left-column tab flow, timed completion.</span>
+              <span>Exact values, wording, and left-column tab flow.</span>
             </a>
           </div>
         </div>
       </section>
 
-      <section class="leaderboard-panel">
-        <div class="leaderboard-header">
-          <h2 class="h5 mb-0">Fastest Local Times</h2>
-          <button type="button" id="clearLeaderboard" class="btn btn-sm btn-outline-light">Clear</button>
+      <section class="shark-panel" aria-label="Friendly shark mascot">
+        <div class="shark">
+          <div class="shark-fin"></div>
+          <div class="shark-body">
+            <div class="shark-eye"></div>
+            <div class="shark-smile"></div>
+          </div>
+          <div class="shark-tail"></div>
         </div>
-        <div id="leaderboardEmpty" class="leaderboard-empty">No completed runs on this browser yet.</div>
-        <table class="table leaderboard-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Sheet</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody id="leaderboardBody"></tbody>
-        </table>
       </section>
     </main>
 

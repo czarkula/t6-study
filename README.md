@@ -5,6 +5,7 @@ Static practice pages derived from the downloaded T-6A boldface and ops limits p
 ## Pages
 
 - `index.html`
+- `leaderboard.html`
 - `boldface.html`
 - `ops.html`
 
@@ -33,7 +34,8 @@ window.T6_BACKEND_URL = "https://your-backend-url.example";
 
 ## Corrections Made
 
-- Added a dark landing page with name entry and a browser-local fastest-times leaderboard.
+- Added a simple dark landing page with name entry and a shark mascot.
+- Added a separate leaderboard page for fastest times.
 - Added run timers for Boldface and Ops Limits. Times save only after an all-correct check.
 - Disabled paste, drag/drop, and context-menu paste on answer fields.
 - Converted original `/uct/...` asset and nav links to local relative paths.

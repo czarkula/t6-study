@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>T-6A Leaderboard</title>
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/css/site.css" rel="stylesheet">
+  </head>
+  <body class="landing-page">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">T-6A Practice</a>
+        <div class="navbar-nav">
+          <a class="nav-link" href="boldface.html">Boldface</a>
+          <a class="nav-link" href="ops.html">Ops Limits</a>
+          <a class="nav-link active" href="leaderboard.html">Leaderboard</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="leaderboard-shell container">
+      <section>
+        <div class="hero-kicker">Fastest runs</div>
+        <h1 class="leaderboard-title">Leaderboard</h1>
+        <p class="hero-copy">Shared scores appear here when the backend is configured. Until then, this page shows local browser times.</p>
+      </section>
+
+      <section class="leaderboard-panel">
+        <div class="leaderboard-header">
+          <h2 class="h5 mb-0">Fastest Times</h2>
+          <button type="button" id="clearLeaderboard" class="btn btn-sm btn-outline-light">Clear Local</button>
+        </div>
+        <div id="leaderboardEmpty" class="leaderboard-empty">No completed runs yet.</div>
+        <table class="table leaderboard-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Sheet</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/config.js"></script>
+    <script src="static/js/practice.js"></script>
+    <script>T6Practice.initLeaderboard();</script>
+  </body>
+</html>
