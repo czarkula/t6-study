@@ -89,15 +89,18 @@ body.landing-page {
 }
 
 .theme-toggle {
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  color: #f8fafc;
-  margin-left: 0.5rem;
+  background: transparent;
+  border: 0;
+  color: rgba(255, 255, 255, 0.55);
+  padding: 0.5rem 0;
+  text-align: left;
 }
 
 .theme-toggle:hover,
 .theme-toggle:focus {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  outline: 0;
 }
 
 .launch-actions {
