@@ -8,6 +8,29 @@ Static practice pages derived from the downloaded T-6A boldface and ops limits p
 - `boldface.html`
 - `ops.html`
 
+## Shared Leaderboard Backend
+
+The frontend works without a backend, but scores are browser-local until `static/js/config.js` contains a deployed backend URL.
+
+The included backend is in `backend/` and uses plain Node with a JSON file:
+
+```powershell
+cd backend
+npm start
+```
+
+Local API URL:
+
+```text
+http://localhost:3000
+```
+
+After deploying the backend, set this in `static/js/config.js`:
+
+```js
+window.T6_BACKEND_URL = "https://your-backend-url.example";
+```
+
 ## Corrections Made
 
 - Added a dark landing page with name entry and a browser-local fastest-times leaderboard.

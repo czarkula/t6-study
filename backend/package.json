@@ -1,0 +1,13 @@
+{
+  "name": "t6-practice-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tiny leaderboard API for the T-6A practice site.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

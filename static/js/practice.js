@@ -14,6 +14,7 @@
 
 		nameInput.value = localStorage.getItem(NAME_KEY) || "";
 		renderLeaderboard();
+		loadRemoteLeaderboard();
 
 		document.querySelectorAll("[data-practice-link]").forEach(function(link) {
 			link.addEventListener("click", function(event) {
@@ -118,15 +119,17 @@
 	}
 
 	function saveResult(kind, name, elapsedMs) {
-		var results = getResults();
-		results.push({
+		var score = {
 			kind: kind,
 			name: name || "Anonymous",
 			elapsedMs: elapsedMs,
 			date: new Date().toISOString()
-		});
+		};
+		var results = getResults();
+		results.push(score);
 		results.sort(function(a, b) { return a.elapsedMs - b.elapsedMs; });
 		localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(results.slice(0, 20)));
+		saveRemoteResult(score);
 	}
 
 	function getResults() {
@@ -155,6 +158,40 @@
 				"<td>" + formatTime(result.elapsedMs) + "</td>";
 			target.appendChild(row);
 		});
+	}
+
+	function loadRemoteLeaderboard() {
+		var baseUrl = getBackendUrl();
+		if (!baseUrl || !window.fetch) return;
+
+		fetch(baseUrl + "/scores", { cache: "no-store" })
+			.then(function(response) {
+				if (!response.ok) throw new Error("Leaderboard request failed");
+				return response.json();
+			})
+			.then(function(results) {
+				if (!Array.isArray(results)) return;
+				localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(results.slice(0, 20)));
+				renderLeaderboard();
+			})
+			.catch(function() {
+				renderLeaderboard();
+			});
+	}
+
+	function saveRemoteResult(score) {
+		var baseUrl = getBackendUrl();
+		if (!baseUrl || !window.fetch) return;
+
+		fetch(baseUrl + "/scores", {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(score)
+		}).catch(function() {});
+	}
+
+	function getBackendUrl() {
+		return String(window.T6_BACKEND_URL || "").replace(/\/+$/, "");
 	}
 
 	function updateTimer(elapsedMs) {
