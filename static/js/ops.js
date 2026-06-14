@@ -9,7 +9,17 @@ $("#checkS2Button").click(function() {
 
 $(function() {
 	setOpsTabOrder();
+	setOpsMobileOrder();
 });
+
+function setOpsMobileOrder() {
+	$("#boldfaceTable tr").each(function(rowIndex) {
+		$(this).children("td").each(function(cellIndex) {
+			var order = rowIndex === 0 ? cellIndex : (cellIndex === 0 ? rowIndex + 1 : 1000 + rowIndex);
+			$(this).css("--ops-mobile-order", order);
+		});
+	});
+}
 
 function setOpsTabOrder() {
 	var leftColumnQuestions = [];

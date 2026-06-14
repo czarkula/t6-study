@@ -70,10 +70,20 @@ input.question {
 	}
 
 	#boldfaceTable,
-	#boldfaceTable tbody,
-	#boldfaceTable tr,
+	#boldfaceTable tbody {
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		width: 100%;
+	}
+
+	#boldfaceTable tr {
+		display: contents;
+	}
+
 	#boldfaceTable td {
 		display: block;
+		order: var(--ops-mobile-order, 0);
 		width: 100%;
 	}
 
@@ -82,21 +92,10 @@ input.question {
 		margin-bottom: 0;
 	}
 
-	#boldfaceTable tr {
+	#boldfaceTable td {
 		border: 1px solid #dee2e6;
 		border-radius: 8px;
-		margin-bottom: 0.55rem;
-		overflow: hidden;
-	}
-
-	#boldfaceTable td {
-		border: 0;
-		border-bottom: 1px solid #dee2e6;
 		padding: 0.62rem 0.65rem;
-	}
-
-	#boldfaceTable td:last-child {
-		border-bottom: 0;
 	}
 
 	.limit-cell {
@@ -141,6 +140,6 @@ input.question {
 	}
 
 	body.practice-dark #boldfaceTable td {
-		border-bottom-color: #314155;
+		border-color: #314155;
 	}
 }
