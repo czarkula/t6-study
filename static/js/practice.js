@@ -1,6 +1,7 @@
 (function() {
 	var LEADERBOARD_KEY = "t6PracticeLeaderboard";
 	var NAME_KEY = "t6PracticeName";
+	var THEME_KEY = "t6PracticeDarkMode";
 
 	window.T6Practice = {
 		initLanding: initLanding,
@@ -13,16 +14,14 @@
 		var nameInput = document.getElementById("pilotName");
 		if (!nameInput) return;
 
-		nameInput.value = localStorage.getItem(NAME_KEY) || "";
+		nameInput.value = "";
 
 		document.querySelectorAll("[data-practice-link]").forEach(function(link) {
 			link.addEventListener("click", function(event) {
 				var name = nameInput.value.trim();
 				if (name) {
-					localStorage.setItem(NAME_KEY, name);
 					link.href = link.getAttribute("data-base-href") + "?name=" + encodeURIComponent(name);
 				} else {
-					localStorage.removeItem(NAME_KEY);
 					link.href = link.getAttribute("data-base-href");
 				}
 			});
@@ -43,6 +42,7 @@
 	}
 
 	function initPracticePage(kind) {
+		initThemeToggle();
 		var name = getName();
 		var state = {
 			kind: kind,
@@ -116,10 +116,25 @@
 		var params = new URLSearchParams(window.location.search);
 		var fromUrl = (params.get("name") || "").trim();
 		if (fromUrl) {
-			localStorage.setItem(NAME_KEY, fromUrl);
 			return fromUrl;
 		}
-		return localStorage.getItem(NAME_KEY) || "Anonymous";
+		return "Anonymous";
+	}
+
+	function initThemeToggle() {
+		var enabled = localStorage.getItem(THEME_KEY) === "true";
+		applyPracticeTheme(enabled);
+
+		$("[data-theme-toggle]").on("click", function() {
+			enabled = !document.body.classList.contains("practice-dark");
+			localStorage.setItem(THEME_KEY, enabled ? "true" : "false");
+			applyPracticeTheme(enabled);
+		});
+	}
+
+	function applyPracticeTheme(enabled) {
+		document.body.classList.toggle("practice-dark", enabled);
+		$("[data-theme-toggle]").text(enabled ? "Light Mode" : "Dark Mode");
 	}
 
 	function saveResult(kind, name, elapsedMs) {
