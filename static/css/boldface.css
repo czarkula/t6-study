@@ -6,8 +6,17 @@ main {
   padding-inline: 1rem;
 }
 
+#boldfaceTable {
+  table-layout: fixed;
+}
+
+#boldfaceTable td {
+  overflow-wrap: anywhere;
+}
+
 textarea {
   min-height: 6rem;
+  resize: vertical;
 }
 
 textarea.compact-checkarea {
@@ -44,4 +53,78 @@ textarea.compact-checkarea {
 
 .answer {
 	white-space: pre-wrap;
+}
+
+@media (max-width: 700px) {
+  body {
+    padding-top: 4.65rem;
+  }
+
+  main {
+    padding-inline: 0.75rem;
+  }
+
+  #boldfaceTable,
+  #boldfaceTable tbody,
+  #boldfaceTable tr,
+  #boldfaceTable td {
+    display: block;
+    width: 100%;
+  }
+
+  #boldfaceTable {
+    border: 0;
+    margin-bottom: 0;
+  }
+
+  #boldfaceTable tr {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 0.7rem;
+    overflow: hidden;
+  }
+
+  #boldfaceTable td {
+    border: 0;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.7rem;
+  }
+
+  #boldfaceTable td:last-child {
+    border-bottom: 0;
+  }
+
+  textarea {
+    font-size: 1rem;
+    min-height: 5rem;
+  }
+
+  textarea.compact-checkarea {
+    min-height: 3rem;
+  }
+
+  .inline-boldface-line {
+    align-items: stretch;
+    gap: 0.4rem;
+    white-space: normal;
+  }
+
+  .breaker-field,
+  .pull-field {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  .console-note {
+    flex: 0 0 auto;
+    line-height: 2.35rem;
+  }
+
+  body.practice-dark #boldfaceTable tr {
+    border-color: #314155;
+  }
+
+  body.practice-dark #boldfaceTable td {
+    border-bottom-color: #314155;
+  }
 }
