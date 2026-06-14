@@ -78,7 +78,7 @@
 		state.startedAt = Date.now();
 		state.timerId = setInterval(function() {
 			updateTimer(Date.now() - state.startedAt);
-		}, 250);
+		}, 50);
 		updateTimer(0);
 		updateSessionMessage("Timer running.");
 	}
@@ -93,7 +93,7 @@
 			'<div class="session-meta">' +
 				'<span>Name: <strong>' + escapeHtml(name) + '</strong></span>' +
 				'<span>Page: <strong>' + escapeHtml(labelForKind(kind)) + '</strong></span>' +
-				'<span>Time: <strong id="practiceTimer">00:00.0</strong></span>' +
+				'<span>Time: <strong id="practiceTimer">00:00.000</strong></span>' +
 			'</div>' +
 			'<div class="session-message" id="sessionMessage">Timer starts when you type.</div>';
 		main.insertBefore(bar, main.firstChild);
@@ -209,12 +209,12 @@
 	}
 
 	function formatTime(ms) {
-		var totalTenths = Math.floor(ms / 100);
-		var tenths = totalTenths % 10;
-		var totalSeconds = Math.floor(totalTenths / 10);
+		var totalMs = Math.max(0, Math.floor(ms));
+		var milliseconds = totalMs % 1000;
+		var totalSeconds = Math.floor(totalMs / 1000);
 		var seconds = totalSeconds % 60;
 		var minutes = Math.floor(totalSeconds / 60);
-		return pad(minutes) + ":" + pad(seconds) + "." + tenths;
+		return pad(minutes) + ":" + pad(seconds) + "." + String(milliseconds).padStart(3, "0");
 	}
 
 	function pad(value) {
