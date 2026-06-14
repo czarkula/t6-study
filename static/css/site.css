@@ -141,10 +141,23 @@ html {
 
 .leaderboard-header {
   align-items: center;
+  background: #0f1722;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1.1rem;
+  padding: 1.1rem 1.2rem;
+}
+
+.leaderboard-heading {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.leaderboard-subtitle {
+  color: #96a8bb;
+  font-size: 0.88rem;
+  margin: 0.2rem 0 0;
 }
 
 .leaderboard-table {
@@ -155,7 +168,59 @@ html {
 .leaderboard-table td,
 .leaderboard-table th {
   border-color: rgba(255, 255, 255, 0.08);
-  padding: 0.65rem 1.1rem;
+  padding: 0.78rem 1.1rem;
+  vertical-align: middle;
+}
+
+.leaderboard-table thead th {
+  background: #121821;
+  color: #96a8bb;
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.leaderboard-table tbody tr:nth-child(odd) td {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.leaderboard-rank {
+  align-items: center;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  display: inline-flex;
+  font-weight: 800;
+  height: 2rem;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0 0.55rem;
+}
+
+.leaderboard-name {
+  font-weight: 800;
+}
+
+.leaderboard-kind {
+  background: rgba(125, 211, 252, 0.12);
+  border: 1px solid rgba(125, 211, 252, 0.24);
+  border-radius: 999px;
+  color: #bfdbfe;
+  display: inline-flex;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.25rem 0.6rem;
+}
+
+.leaderboard-time {
+  background: #08111d;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #f8fafc;
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  padding: 0.35rem 0.55rem;
 }
 
 .leaderboard-empty {

@@ -441,10 +441,10 @@
 		results.forEach(function(result, index) {
 			var row = document.createElement("tr");
 			row.innerHTML =
-				"<td>" + (index + 1) + "</td>" +
-				"<td>" + escapeHtml(result.name) + "</td>" +
-				"<td>" + escapeHtml(labelForKind(result.kind)) + "</td>" +
-				"<td>" + formatTime(result.elapsedMs) + "</td>";
+				'<td><span class="leaderboard-rank">' + (index + 1) + "</span></td>" +
+				'<td><span class="leaderboard-name">' + escapeHtml(result.name) + "</span></td>" +
+				'<td><span class="leaderboard-kind">' + escapeHtml(labelForKind(result.kind)) + "</span></td>" +
+				'<td><span class="leaderboard-time">' + formatTime(result.elapsedMs) + "</span></td>";
 			target.appendChild(row);
 		});
 	}
