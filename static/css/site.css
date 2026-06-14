@@ -19,6 +19,32 @@ html {
   gap: 0.35rem 0.75rem;
 }
 
+body:not(.landing-page) .navbar.bg-dark {
+  background: #223044 !important;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+  margin: 0 0.75rem;
+  width: calc(100% - 1.5rem);
+}
+
+body:not(.landing-page) .navbar.bg-dark .nav-link,
+body:not(.landing-page) .navbar.bg-dark .navbar-brand {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+body:not(.landing-page) .navbar.bg-dark .nav-link.active,
+body:not(.landing-page) .navbar.bg-dark .nav-link:hover,
+body:not(.landing-page) .navbar.bg-dark .navbar-brand:hover {
+  color: #fff;
+}
+
+body.practice-dark .navbar.bg-dark {
+  background: #0f1722 !important;
+  border-color: #263445;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+}
+
 .home-shell {
   align-items: center;
   display: grid;
@@ -533,6 +559,11 @@ body.practice-dark .question-group[style*="background-color: rgb(245, 201, 201)"
   .navbar {
     padding-bottom: 0.35rem;
     padding-top: 0.35rem;
+  }
+
+  body:not(.landing-page) .navbar.bg-dark {
+    margin: 0 0.5rem;
+    width: calc(100% - 1rem);
   }
 
   .navbar-brand {
