@@ -34,7 +34,7 @@ window.T6_BACKEND_URL = "https://your-backend-url.example";
 
 ## Corrections Made
 
-- Added a simple dark landing page with name entry and a shark mascot.
+- Added a simple dark landing page with name entry and a cool little shark picture.
 - Added a separate leaderboard page for fastest times.
 - Added run timers for Boldface and Ops Limits. Times save only after an all-correct check.
 - Disabled paste, drag/drop, and context-menu paste on answer fields.
