@@ -18,13 +18,13 @@
 		document.querySelectorAll("[data-practice-link]").forEach(function(link) {
 			link.addEventListener("click", function(event) {
 				var name = nameInput.value.trim();
-				if (!name) {
-					event.preventDefault();
-					nameInput.focus();
-					return;
+				if (name) {
+					localStorage.setItem(NAME_KEY, name);
+					link.href = link.getAttribute("data-base-href") + "?name=" + encodeURIComponent(name);
+				} else {
+					localStorage.removeItem(NAME_KEY);
+					link.href = link.getAttribute("data-base-href");
 				}
-				localStorage.setItem(NAME_KEY, name);
-				link.href = link.getAttribute("data-base-href") + "?name=" + encodeURIComponent(name);
 			});
 		});
 	}
